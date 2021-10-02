@@ -20,5 +20,5 @@ source /mmfs1/home/etrues/miniconda3/etc/profile.d/conda.sh
 conda activate /mmfs1/home/etrues/miniconda3
 
 ## Usual calculations
-python3 relax_slab.py 160 4
+python3 section_3_A.py 160 4
 

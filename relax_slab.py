@@ -19,10 +19,11 @@ structure_files = [f for f in listdir(structures) if isfile(join(structures, f))
 calculation = 'vc-relax'
 
 for name in structure_files:
-
+    # Create temp stucture files to pull from
     process = subprocess.Popen("cp {_folder}/{_name} {_folder}_relaxed/{_name}_temp".format(_folder=folder, _name=name), shell=True, stdout=DEVNULL)
     process.wait()
-
+    
+    # Loop through different external fields
     e_ext_array = np.arange(0.00, 0.085, 0.005)
     for e_ext in e_ext_array:
 

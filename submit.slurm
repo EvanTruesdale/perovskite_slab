@@ -10,7 +10,7 @@
 #SBATCH --mem=185G
 
 #SBATCH --mail-type=ALL
-#SBATCH --mail-user=etrues@uw.edu
+#SBATCH --mail-user=evan@truecrew.net
 
 #SBATCH --chdir=.
 #SBATCH --export=all

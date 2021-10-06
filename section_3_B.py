@@ -170,6 +170,6 @@ filplot.vpot
         process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
         process.wait()
  
-        process=subprocess.Popen("mv avg.dat avg_rho_{_e_ext}.dat".format(_e_ext=round(e_ext*1000)), shell=True, stdout=DEVNULL)
+        process=subprocess.Popen("mv avg.dat rho_{_name}_{_e_ext}.dat".format(_name=name, _e_ext=round(e_ext*1000)), shell=True, stdout=DEVNULL)
         process.wait()
 

@@ -119,11 +119,11 @@ CELL_PARAMETERS {{angstrom}}
 
 K_POINTS {{automatic}}
 8 8 1 0 0 0
-""".format(_e_ext=e_ext, _prefix=name, _masses=masses, _nat=nat, _ntyp=ntyp, _atomic_positions=atomic_positions, _lattice=lattice)
+""".format(_prefix=name, _masses=masses, _nat=nat, _ntyp=ntyp, _atomic_positions=atomic_positions, _lattice=lattice)
         
     # Write text to the input file
-    input_file = 'in/{_name}_{_e_ext}.vc-relax.in'.format(_name=name, _e_ext=round(e_ext*1000))
-    output_file = 'out/{_name}_{_e_ext}.vc-relax.out'.format(_name=name, _e_ext=round(e_ext*1000))
+    input_file = 'in/{_name}.vc-relax.in'.format(_name=name)
+    output_file = 'out/{_name}.vc-relax.out'.format(_name=name)
     with open(input_file, 'w') as f:
         f.write(text)
 
@@ -172,7 +172,7 @@ K_POINTS {{automatic}}
 {_atom_numbers}
 direct
 {_atom_positions}""".format(_cell_parameters=cell_parameters, _atom_types=atom_types, _atom_numbers=atom_numbers, _atom_positions=atom_positions)
-    with open("{_folder}_relaxed/{_name}".format(_folder=folder, _name=name, _e_ext=round(e_ext*1000)), 'w') as f:
+    with open("{_folder}_relaxed/{_name}".format(_folder=folder, _name=name), 'w') as f:
         f.write(text)
 
     # Post Proccessing
@@ -206,7 +206,7 @@ filplot.vpot
     process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
     process.wait()
 
-    process=subprocess.Popen("mv avg.dat avg_rho_0.dat", shell=True, stdout=DEVNULL)
+    process=subprocess.Popen("mv avg.dat rho_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
     process.wait()
 
 

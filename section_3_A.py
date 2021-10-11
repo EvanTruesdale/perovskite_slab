@@ -89,8 +89,8 @@ for name in structure_files:
   ecutrho=400
 
   edir=3
-  emaxpos=0.9875
-  eopreg=0.0125
+  emaxpos=0.95
+  eopreg=0.1
   eamp=0
 /
 
@@ -101,7 +101,7 @@ for name in structure_files:
 /
 
 &IONS
-  trust_radius_min=1d-4
+  trust_radius_min=1d-5
 /
 
 &CELL
@@ -175,7 +175,7 @@ direct
     with open("{_folder}_relaxed/{_name}".format(_folder=folder, _name=name), 'w') as f:
         f.write(text)
 
-    # Post Proccessing
+    # Plot Charge Density
     text = """
 &INPUTPP
   prefix={_name}
@@ -195,7 +195,7 @@ direct
 1
 filplot.vpot
 1.0D0
-100
+300
 3
 {_awin}
     """.format(_awin=lattice_x.split()[0])
@@ -206,7 +206,145 @@ filplot.vpot
     process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
     process.wait()
 
-    process=subprocess.Popen("mv avg.dat rho_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
+    process=subprocess.Popen("mv avg.dat charge_density_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
     process.wait()
 
 
+    # Plot Total Potential
+    text = """
+&INPUTPP
+  prefix={_name}
+  outdir='./out'
+  filplot='filplot.vpot'
+  plot_num=1
+/
+    """.format(_name=name)
+    input_file = 'in/{_name}.pp.in'.format(_name=name)
+    output_file = 'out/{_name}.pp.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/pp.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    text = """
+1
+filplot.vpot
+1.0D0
+300
+3
+{_awin}
+    """.format(_awin=lattice_x.split()[0])
+    input_file = 'in/{_name}.average.in'.format(_name=name)
+    output_file = 'out/{_name}.average.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    process=subprocess.Popen("mv avg.dat total_potential_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
+    process.wait()
+
+
+    # Plot Ionic Potential
+    text = """
+&INPUTPP
+  prefix={_name}
+  outdir='./out'
+  filplot='filplot.vpot'
+  plot_num=2
+/
+    """.format(_name=name)
+    input_file = 'in/{_name}.pp.in'.format(_name=name)
+    output_file = 'out/{_name}.pp.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/pp.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    text = """
+1
+filplot.vpot
+1.0D0
+300
+3
+{_awin}
+    """.format(_awin=lattice_x.split()[0])
+    input_file = 'in/{_name}.average.in'.format(_name=name)
+    output_file = 'out/{_name}.average.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    process=subprocess.Popen("mv avg.dat ionic_potential_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
+    process.wait()
+
+
+    # Plot Ionic + Hatree Potential
+    text = """
+&INPUTPP
+  prefix={_name}
+  outdir='./out'
+  filplot='filplot.vpot'
+  plot_num=11
+/
+    """.format(_name=name)
+    input_file = 'in/{_name}.pp.in'.format(_name=name)
+    output_file = 'out/{_name}.pp.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/pp.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    text = """
+1
+filplot.vpot
+1.0D0
+300
+3
+{_awin}
+    """.format(_awin=lattice_x.split()[0])
+    input_file = 'in/{_name}.average.in'.format(_name=name)
+    output_file = 'out/{_name}.average.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    process=subprocess.Popen("mv avg.dat ionic_hartree_potential_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
+    process.wait()
+
+
+    # Plot Sawtooth Potential
+    text = """
+&INPUTPP
+  prefix={_name}
+  outdir='./out'
+  filplot='filplot.vpot'
+  plot_num=12
+/
+    """.format(_name=name)
+    input_file = 'in/{_name}.pp.in'.format(_name=name)
+    output_file = 'out/{_name}.pp.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/pp.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    text = """
+1
+filplot.vpot
+1.0D0
+300
+3
+{_awin}
+    """.format(_awin=lattice_x.split()[0])
+    input_file = 'in/{_name}.average.in'.format(_name=name)
+    output_file = 'out/{_name}.average.out'.format(_name=name)
+    with open(input_file, 'w') as f:
+        f.write(text)
+    process = subprocess.Popen("/gscratch/cmt/software/qe-6.4.1_cmt_icc/PP/src/average.x < {_in} > {_out}".format(_in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
+    process.wait()
+
+    process=subprocess.Popen("mv avg.dat sawtooth_{_name}_0.dat".format(_name=name), shell=True, stdout=DEVNULL)
+    process.wait()

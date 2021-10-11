@@ -96,8 +96,8 @@ for name in structure_files:
   ecutrho=400
 
   edir=3
-  emaxpos=0.9875
-  eopreg=0.0125
+  emaxpos=0.95
+  eopreg=0.1
   eamp={_e_ext}
 /
 
@@ -108,7 +108,7 @@ for name in structure_files:
 /
 
 &IONS
-  trust_radius_min=1d-4
+  trust_radius_min=1d-5
 /
 
 &CELL
@@ -206,7 +206,7 @@ direct
 1
 filplot.vpot
 1.0D0
-100
+300
 3
 {_awin}
         """.format(_awin=lattice_x.split()[0])
@@ -296,8 +296,8 @@ filplot.vpot
   ecutrho=400
 
   edir=3
-  emaxpos=0.9875
-  eopreg=0.0125
+  emaxpos=0.95
+  eopreg=0.1
   eamp=0
 /
 
@@ -308,7 +308,7 @@ filplot.vpot
 /
 
 &IONS
-  trust_radius_min=1d-4
+  trust_radius_min=1d-5
 /
 
 &CELL
@@ -358,7 +358,7 @@ K_POINTS {{automatic}}
 1
 filplot.vpot
 1.0D0
-100
+300
 3
 {_awin}
     """.format(_awin=lattice_x.split()[0])

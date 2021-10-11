@@ -97,8 +97,8 @@ for name in structure_files:
   ecutrho=400
 
   edir=3
-  emaxpos=0.9875
-  eopreg=0.0125
+  emaxpos=0.95
+  eopreg=0.1
   eamp={_e_ext}
 /
 
@@ -109,7 +109,7 @@ for name in structure_files:
 /
 
 &IONS
-  trust_radius_min=1d-4
+  trust_radius_min=1d-5
 /
 
 &CELL
@@ -139,7 +139,7 @@ K_POINTS {{automatic}}
         process = subprocess.Popen("mpirun -n {_cpus} /gscratch/cmt/software/qe-6.4.1_cmt_icc/PW/src/pw.x -npool {_nodes} < {_in} > {_out}".format(_cpus=cpus, _nodes=nodes, _in=input_file, _out=output_file), shell=True, stdout=DEVNULL)
         process.wait()
 
-        # Post Processing
+        # Post Processing, save planar averaged charge density
         text = """
 &INPUTPP
   prefix={_name}
@@ -159,7 +159,7 @@ K_POINTS {{automatic}}
 1
 filplot.vpot
 1.0D0
-100
+300
 3
 {_awin}
         """.format(_awin=lattice_x.split()[0])
